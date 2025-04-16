@@ -1,176 +1,148 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
+import { Formik, Form, Field, ErrorMessage } from 'formik';
+import * as Yup from 'yup';
 
 function ClienteModal({ cliente, isEditing, onSave, onClose }) {
-  const [formData, setFormData] = useState({
-    id: null,
-    first_name: '',
-    last_name: '',
-    email: '',
-    phone: '',
-    address: ''
+  // Esquema de validación con Yup
+  const ClienteSchema = Yup.object().shape({
+    first_name: Yup.string()
+      .required('El nombre es requerido'),
+    last_name: Yup.string()
+      .required('El apellido es requerido'),
+    email: Yup.string()
+      .email('El email no es válido')
+      .required('El email es requerido'),
+    phone: Yup.string()
+      .matches(/^\d+$/, 'El teléfono solo debe contener números')
+      .required('El teléfono es requerido'),
+    address: Yup.string()
   });
-  
-  const [errors, setErrors] = useState({});
-  
-  // Inicializar el formulario cuando se abre el modal
-  useEffect(() => {
-    if (cliente) {
-      setFormData(cliente);
-    }
-  }, [cliente]);
-  
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData({
-      ...formData,
-      [name]: value
-    });
-    
-    // Limpiar error del campo cuando el usuario escribe
-    if (errors[name]) {
-      setErrors({
-        ...errors,
-        [name]: null
-      });
-    }
+
+  // Valores iniciales
+  const initialValues = {
+    id: cliente?.id || null,
+    first_name: cliente?.first_name || '',
+    last_name: cliente?.last_name || '',
+    email: cliente?.email || '',
+    phone: cliente?.phone || '',
+    address: cliente?.address || ''
   };
-  
-  const validateForm = () => {
-    const newErrors = {};
-    
-    if (!formData.first_name.trim()) {
-      newErrors.first_name = 'El nombre es requerido';
-    }
-    
-    if (!formData.last_name.trim()) {
-      newErrors.last_name = 'El apellido es requerido';
-    }
-    
-    if (!formData.email.trim()) {
-      newErrors.email = 'El email es requerido';
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
-      newErrors.email = 'El email no es válido';
-    }
-    
-    if (!formData.phone.trim()) {
-      newErrors.phone = 'El teléfono es requerido';
-    }
-    
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
+
+  // Función para manejar el envío del formulario
+  const handleSubmit = (values, { setSubmitting }) => {
+    onSave(values);
+    setSubmitting(false);
   };
-  
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    if (validateForm()) {
-      onSave(formData);
-    }
-  };
-  
+
   return (
-    <div className="fixed inset-0 bg-black bg-opacity-100 flex items-center justify-center z-50">
+    <div className="fixed inset-0 bg-gray-800 bg-opacity-75 flex items-center justify-center z-50">
       <div className="bg-white rounded-lg p-8 w-full max-w-md">
         <h2 className="text-2xl font-bold mb-6">
           {isEditing ? 'Editar Cliente' : 'Nuevo Cliente'}
         </h2>
         
-        <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="first_name">
-              Nombre
-            </label>
-            <input
-              type="text"
-              id="first_name"
-              name="first_name"
-              value={formData.first_name}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg ${errors.first_name ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Nombre del cliente"
-            />
-            {errors.first_name && <p className="text-red-500 text-xs mt-1">{errors.first_name}</p>}
-          </div>
-          
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="last_name">
-              Apellido
-            </label>
-            <input
-              type="text"
-              id="last_name"
-              name="last_name"
-              value={formData.last_name}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg ${errors.last_name ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Apellido del cliente"
-            />
-            {errors.last_name && <p className="text-red-500 text-xs mt-1">{errors.last_name}</p>}
-          </div>
-          
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
-              Email
-            </label>
-            <input
-              type="email"
-              id="email"
-              name="email"
-              value={formData.email}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg ${errors.email ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Email del cliente"
-            />
-            {errors.email && <p className="text-red-500 text-xs mt-1">{errors.email}</p>}
-          </div>
-          
-          <div className="mb-4">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
-              Teléfono
-            </label>
-            <input
-              type="tel"
-              id="phone"
-              name="phone"
-              value={formData.phone}
-              onChange={handleChange}
-              className={`w-full px-3 py-2 border rounded-lg ${errors.phone ? 'border-red-500' : 'border-gray-300'}`}
-              placeholder="Teléfono del cliente"
-            />
-            {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone}</p>}
-          </div>
-          
-          <div className="mb-6">
-            <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
-              Dirección
-            </label>
-            <textarea
-              id="address"
-              name="address"
-              value={formData.address}
-              onChange={handleChange}
-              className="w-full px-3 py-2 border border-gray-300 rounded-lg"
-              placeholder="Dirección del cliente"
-              rows="3"
-            ></textarea>
-          </div>
-          
-          <div className="flex justify-end">
-            <button
-              type="button"
-              onClick={onClose}
-              className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
-            >
-              Cancelar
-            </button>
-            <button
-              type="submit"
-              className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
-            >
-              {isEditing ? 'Actualizar' : 'Guardar'}
-            </button>
-          </div>
-        </form>
+        <Formik
+          initialValues={initialValues}
+          validationSchema={ClienteSchema}
+          onSubmit={handleSubmit}
+        >
+          {({ isSubmitting, errors, touched, setFieldValue, values }) => (
+            <Form>
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="first_name">
+                  Nombre
+                </label>
+                <Field
+                  type="text"
+                  id="first_name"
+                  name="first_name"
+                  placeholder="Nombre del cliente"
+                  className={`w-full px-3 py-2 border rounded-lg ${errors.first_name && touched.first_name ? 'border-red-500' : 'border-gray-300'}`}
+                />
+                <ErrorMessage name="first_name" component="p" className="text-red-500 text-xs mt-1" />
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="last_name">
+                  Apellido
+                </label>
+                <Field
+                  type="text"
+                  id="last_name"
+                  name="last_name"
+                  placeholder="Apellido del cliente"
+                  className={`w-full px-3 py-2 border rounded-lg ${errors.last_name && touched.last_name ? 'border-red-500' : 'border-gray-300'}`}
+                />
+                <ErrorMessage name="last_name" component="p" className="text-red-500 text-xs mt-1" />
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="email">
+                  Email
+                </label>
+                <Field
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="Email del cliente"
+                  className={`w-full px-3 py-2 border rounded-lg ${errors.email && touched.email ? 'border-red-500' : 'border-gray-300'}`}
+                />
+                <ErrorMessage name="email" component="p" className="text-red-500 text-xs mt-1" />
+              </div>
+              
+              <div className="mb-4">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="phone">
+                  Teléfono
+                </label>
+                <Field
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="Teléfono del cliente"
+                  inputMode="numeric"
+                  className={`w-full px-3 py-2 border rounded-lg ${errors.phone && touched.phone ? 'border-red-500' : 'border-gray-300'}`}
+                  onChange={(e) => {
+                    // Filtrar solo dígitos
+                    const numericValue = e.target.value.replace(/\D/g, '');
+                    setFieldValue('phone', numericValue);
+                  }}
+                />
+                <ErrorMessage name="phone" component="p" className="text-red-500 text-xs mt-1" />
+              </div>
+              
+              <div className="mb-6">
+                <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="address">
+                  Dirección
+                </label>
+                <Field
+                  as="textarea"
+                  id="address"
+                  name="address"
+                  placeholder="Dirección del cliente"
+                  rows="3"
+                  className="w-full px-3 py-2 border border-gray-300 rounded-lg"
+                />
+              </div>
+              
+              <div className="flex justify-end">
+                <button
+                  type="button"
+                  onClick={onClose}
+                  className="bg-gray-300 hover:bg-gray-400 text-gray-800 font-bold py-2 px-4 rounded mr-2"
+                >
+                  Cancelar
+                </button>
+                <button
+                  type="submit"
+                  disabled={isSubmitting}
+                  className="bg-blue-500 hover:bg-blue-600 text-white font-bold py-2 px-4 rounded"
+                >
+                  {isEditing ? 'Actualizar' : 'Guardar'}
+                </button>
+              </div>
+            </Form>
+          )}
+        </Formik>
       </div>
     </div>
   );

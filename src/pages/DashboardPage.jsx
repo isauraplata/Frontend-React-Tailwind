@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 import ClienteModal from '../components/modals/ClienteModal';
 import MotoModal from '../components/modals/MotoModal';
 import OrdenModal from '../components/modals/OrdenModal';
-import StatCard from './cards/StatCard';
+import StatCard from '../components/cards/StatCard';
 import ClientesTable from '../components/tables/ClientesTable';
 import MotocicletasTable from '../components/tables/MotocicletasTable';
 import OrdenesTable from '../components/tables/OrdenesTable';
@@ -12,7 +12,7 @@ import useCliente from '../hooks/useCliente';
 import useMoto from '../hooks/useMoto';
 import useOrden from '../hooks/useOrden';
 
-function Dashboard() {
+function DashboardPage() {
   // Utilizamos los hooks personalizados
   const cliente = useCliente();
   const moto = useMoto();
@@ -162,4 +162,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default DashboardPage;

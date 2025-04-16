@@ -1,7 +1,9 @@
 import axios from "axios";
 
 // API base URL
-const API_BASE_URL = 'http://localhost:8000/api/v1';
+const API_BASE_URL = import.meta.env.VITE_API_URL;
+
+console.log('URL de la API:', API_BASE_URL)
 
 // Servicios para clientes
 export const clienteService = {

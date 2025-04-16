@@ -1,5 +1,6 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import { generarOrdenPDF } from '../../utils/PDFGenerator';
 
 function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, onNew, loading, error, limit }) {
   const displayOrdenes = limit ? ordenes.slice(0, limit) : ordenes;
@@ -19,11 +20,19 @@ function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, 
         return 'Fecha no disponible';
       }
       
+      // Formatea la fecha según la localización del navegador
       return date.toLocaleDateString();
     } catch (error) {
       console.error('Error al formatear la fecha:', error);
       return 'Fecha no disponible';
     }
+  };
+
+  // Handler para generar PDF
+  const handleGenerarPDF = (orden) => {
+    const moto = getMotoById(orden.motorcycle_id);
+    const cliente = moto ? getClienteById(moto.customer_id) : null;
+    generarOrdenPDF(orden, moto, cliente);
   };
 
   return (
@@ -110,9 +119,15 @@ function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, 
                         </button>
                         <button
                           onClick={() => onDelete(orden.id)}
-                          className="text-red-600 hover:text-red-900"
+                          className="text-red-600 hover:text-red-900 mr-3"
                         >
                           Eliminar
+                        </button>
+                        <button
+                          onClick={() => handleGenerarPDF(orden)}
+                          className="text-green-600 hover:text-green-900"
+                        >
+                          PDF
                         </button>
                       </td>
                     </tr>

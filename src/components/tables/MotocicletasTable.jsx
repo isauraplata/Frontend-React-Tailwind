@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onNew, loading, error, limit }) {
-  // If limit is provided, only show that many items
   const displayMotocicletas = limit ? motocicletas.slice(0, limit) : motocicletas;
 
   return (

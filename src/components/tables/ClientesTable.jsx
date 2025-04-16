@@ -2,7 +2,6 @@ import React from 'react';
 import { Link } from 'react-router-dom';
 
 function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limit }) {
-  // If limit is provided, only show that many items
   const displayClientes = limit ? clientes.slice(0, limit) : clientes;
   
   return (
