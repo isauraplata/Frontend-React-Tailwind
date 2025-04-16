@@ -4,7 +4,6 @@ import Navbar from './components/Navbar';
 import ClientePage from './pages/ClientePage';
 import MotocicletasPage from './pages/MotocicletasPage';
 import OrdenesServicioPage from './pages/OrdenesServicioPage';
-import LoginPage from './pages/LoginPage';
 import Dashboard from './components/Dashboard';
 
 function App() {
@@ -17,7 +16,6 @@ function App() {
           <Route path="/clientes" element={<ClientePage />} />
           <Route path="/motocicletas" element={<MotocicletasPage />} />
           <Route path="/ordenes" element={<OrdenesServicioPage />} />
-          <Route path="/login" element={<LoginPage />} />
         </Routes>
       </div>
     </div>

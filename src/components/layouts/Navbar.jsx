@@ -5,7 +5,6 @@ function Navbar() {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const location = useLocation();
   
-  // Determinar la ruta activa para destacarla en el menú
   const isActive = (path) => {
     return location.pathname === path;
   };
