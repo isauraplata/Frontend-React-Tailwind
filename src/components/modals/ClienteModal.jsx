@@ -13,7 +13,7 @@ function ClienteModal({ cliente, isEditing, onSave, onClose }) {
       .email('El email no es válido')
       .required('El email es requerido'),
     phone: Yup.string()
-      .matches(/^\d+$/, 'El teléfono solo debe contener números')
+      .matches(/^\d{10}$/, 'El teléfono debe tener exactamente 10 dígitos')
       .required('El teléfono es requerido'),
     address: Yup.string()
   });

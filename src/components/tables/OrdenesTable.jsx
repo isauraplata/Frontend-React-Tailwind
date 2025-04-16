@@ -1,6 +1,8 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { generarOrdenPDF } from '../../utils/PDFGenerator';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, onNew, loading, error, limit }) {
   const displayOrdenes = limit ? ordenes.slice(0, limit) : ordenes;
@@ -33,6 +35,26 @@ function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, 
     const moto = getMotoById(orden.motorcycle_id);
     const cliente = moto ? getClienteById(moto.customer_id) : null;
     generarOrdenPDF(orden, moto, cliente);
+  };
+  
+  // Función para confirmar eliminación
+  const confirmDelete = (id, orderInfo) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar la orden de servicio #${id}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, llamamos a la función onDelete
+        onDelete(id);
+        toast.success('La orden de servicio ha sido eliminada');
+      }
+    });
   };
 
   return (
@@ -82,6 +104,7 @@ function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, 
                 {displayOrdenes.map(orden => {
                   const moto = getMotoById(orden.motorcycle_id);
                   const cliente = moto ? getClienteById(moto.customer_id) : null;
+                  const ordenInfo = `${formatDate(orden.creation_date || orden.date)} - ${moto ? `${moto.brand} ${moto.model}` : 'Moto no encontrada'}`;
                   
                   return (
                     <tr key={orden.id} className="hover:bg-gray-50">
@@ -118,7 +141,7 @@ function OrdenesTable({ ordenes, getClienteById, getMotoById, onEdit, onDelete, 
                           Editar
                         </button>
                         <button
-                          onClick={() => onDelete(orden.id)}
+                          onClick={() => confirmDelete(orden.id, ordenInfo)}
                           className="text-red-600 hover:text-red-900 mr-3"
                         >
                           Eliminar

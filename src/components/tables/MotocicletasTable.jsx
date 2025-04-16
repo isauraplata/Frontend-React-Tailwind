@@ -1,8 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onNew, loading, error, limit }) {
   const displayMotocicletas = limit ? motocicletas.slice(0, limit) : motocicletas;
+
+  // Función para confirmar eliminación
+  const confirmDelete = (id, motoInfo) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar la motocicleta ${motoInfo}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, llamamos a la función onDelete
+        onDelete(id);
+        toast.success('La motocicleta ha sido eliminada.');
+      }
+    });
+  };
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -72,7 +94,7 @@ function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onN
                           Editar
                         </button>
                         <button
-                          onClick={() => onDelete(moto.id)}
+                          onClick={() => confirmDelete(moto.id, `${moto.brand} ${moto.model} (${moto.license_plate})`)}
                           className="text-red-600 hover:text-red-900"
                         >
                           Eliminar

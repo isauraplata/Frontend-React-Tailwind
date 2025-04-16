@@ -1,8 +1,30 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
+import Swal from 'sweetalert2';
+import toast from 'react-hot-toast';
 
 function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limit }) {
   const displayClientes = limit ? clientes.slice(0, limit) : clientes;
+  
+  // Función para confirmar eliminación
+  const confirmDelete = (id, name) => {
+    Swal.fire({
+      title: '¿Estás seguro?',
+      text: `¿Deseas eliminar al cliente ${name}?`,
+      icon: 'warning',
+      showCancelButton: true,
+      confirmButtonColor: '#3085d6',
+      cancelButtonColor: '#d33',
+      confirmButtonText: 'Sí, eliminar',
+      cancelButtonText: 'Cancelar'
+    }).then((result) => {
+      if (result.isConfirmed) {
+        // Si el usuario confirma, llamamos a la función onDelete
+        onDelete(id);
+        toast.success('Cliente eliminado correctamente');
+      }
+    });
+  };
   
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
@@ -63,7 +85,7 @@ function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limi
                         Editar
                       </button>
                       <button
-                        onClick={() => onDelete(cliente.id)}
+                        onClick={() => confirmDelete(cliente.id, `${cliente.first_name} ${cliente.last_name}`)}
                         className="text-red-600 hover:text-red-900"
                       >
                         Eliminar

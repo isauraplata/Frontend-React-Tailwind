@@ -1,5 +1,7 @@
 // App.jsx
 import { Routes, Route } from 'react-router-dom';
+import { Toaster } from 'react-hot-toast';
+
 import Navbar from './components/layouts/Navbar';
 import ClientePage from './pages/ClientePage';
 import MotocicletasPage from './pages/MotocicletasPage';
@@ -18,6 +20,18 @@ function App() {
           <Route path="/ordenes" element={<OrdenesServicioPage />} />
         </Routes>
       </div>
+      
+      {/* Configuración simple de React Hot Toast */}
+      <Toaster 
+        position="top-right"
+        toastOptions={{
+          duration: 2000,
+          style: {
+            background: '#363636',
+            color: '#fff',
+          },
+        }}
+      />
     </div>
   );
 }

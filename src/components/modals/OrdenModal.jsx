@@ -5,6 +5,8 @@ import * as Yup from 'yup';
 function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, onClose }) {
   // Estado para mantener la información del cliente
   const [clienteInfo, setClienteInfo] = useState(null);
+  // Estado para el mensaje de error del precio
+  const [precioError, setPrecioError] = useState('');
   
   // Esquema de validación con Yup
   const OrdenSchema = Yup.object().shape({
@@ -199,7 +201,10 @@ function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, on
                                 placeholder="Nombre del servicio"
                                 className="w-full px-3 py-2 border rounded-lg border-gray-300"
                                 value={values.newServiceName || ''}
-                                onChange={e => setFieldValue('newServiceName', e.target.value)}
+                                onChange={e => {
+                                  setFieldValue('newServiceName', e.target.value);
+                                  setPrecioError('');
+                                }}
                               />
                             </div>
                             
@@ -208,28 +213,45 @@ function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, on
                                 type="number"
                                 id="newServicePrice"
                                 placeholder="Precio"
-                                className="w-full px-3 py-2 border rounded-lg border-gray-300"
-                                min="0"
+                                className={`w-full px-3 py-2 border rounded-lg ${precioError ? 'border-red-500' : 'border-gray-300'}`}
+                                min="0.01"
                                 step="0.01"
                                 value={values.newServicePrice || ''}
-                                onChange={e => setFieldValue('newServicePrice', e.target.value)}
+                                onChange={e => {
+                                  setFieldValue('newServicePrice', e.target.value);
+                                  setPrecioError('');
+                                }}
                               />
+                              {precioError && (
+                                <p className="text-red-500 text-xs mt-1">{precioError}</p>
+                              )}
                             </div>
                             
                             <div className="flex items-end">
                               <button
                                 type="button"
                                 onClick={() => {
-                                  if (values.newServiceName && parseFloat(values.newServicePrice) > 0) {
-                                    push({
-                                      name: values.newServiceName,
-                                      price: parseFloat(values.newServicePrice)
-                                    });
-                                    setFieldValue('newServiceName', '');
-                                    setFieldValue('newServicePrice', '');
+                                  // Verificar que el precio sea mayor que 0
+                                  const precio = parseFloat(values.newServicePrice);
+                                  if (!values.newServiceName) {
+                                    setPrecioError('');
+                                    return;
                                   }
+                                  
+                                  if (!values.newServicePrice || precio <= 0) {
+                                    setPrecioError('El precio debe ser mayor que 0');
+                                    return;
+                                  }
+                                  
+                                  push({
+                                    name: values.newServiceName,
+                                    price: precio
+                                  });
+                                  setFieldValue('newServiceName', '');
+                                  setFieldValue('newServicePrice', '');
+                                  setPrecioError('');
                                 }}
-                                className="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded"
+                                className="bg-[#c2410c] hover:bg-[#9a3412] text-white py-2 px-4 rounded"
                               >
                                 Agregar
                               </button>
@@ -294,7 +316,7 @@ function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, on
                   </button>
                   <button
                     type="submit"
-                    className="bg-purple-500 hover:bg-purple-600 text-white font-bold py-2 px-4 rounded"
+                    className="bg-[#1e40af] hover:bg-[#1e3a8a] text-white font-bold py-2 px-4 rounded"
                   >
                     {isEditing ? 'Actualizar' : 'Guardar'}
                   </button>
