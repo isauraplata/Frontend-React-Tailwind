@@ -2,7 +2,7 @@
 
 ## 🚀 Características principales
 
-- Interfaz moderna y responsive con **TailwindCSS**
+- Interfaz construida con **TailwindCSS**
 - Dashboard sencillo pero visualmente atractivo
 - Módulos:
   - **Clientes**: Registro y gestión de clientes
@@ -21,9 +21,6 @@ Sigue estos pasos para clonar y levantar el proyecto en tu entorno local:
 # Clonar el repositorio
 git clone https://github.com/isauraplata/Frontend-React-Tailwind.git
 
-# Accede al directorio
-cd Front-Motocicletas
-
 # Instalar dependencias
 npm install
 # o
@@ -33,7 +30,7 @@ yarn install
 npm run dev
 # o
 yarn dev
-
+```
 
 ### Variables de entorno
 
@@ -41,4 +38,4 @@ Crea un archivo `.env.development` en la raíz del proyecto con el siguiente con
 
 ```env
 VITE_API_URL=http://localhost:8000/api/v1
-
+```
