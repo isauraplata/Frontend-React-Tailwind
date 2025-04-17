@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 function MotoModal({ moto, clientes, isEditing, onSave, onClose }) {
   // Esquema de validación con Yup
@@ -52,11 +53,19 @@ function MotoModal({ moto, clientes, isEditing, onSave, onClose }) {
               customer_id: parseInt(values.customer_id)
             };
             
+            // Guardar los datos
             onSave(formattedValues);
+            
+            // Mostrar notificación toast
+            toast.success(isEditing ? 'Motocicleta actualizada correctamente' : 'Motocicleta registrada correctamente');
+            
+            // Cerrar el modal después de guardar
+            onClose();
+            
             setSubmitting(false);
           }}
         >
-          {({ errors, touched }) => (
+          {({ errors, touched, isSubmitting }) => (
             <Form>
               <div className="mb-4">
                 <label className="block text-gray-700 text-sm font-bold mb-2" htmlFor="brand">
@@ -161,6 +170,7 @@ function MotoModal({ moto, clientes, isEditing, onSave, onClose }) {
                 </button>
                 <button
                   type="submit"
+                  disabled={isSubmitting}
                   className="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded"
                 >
                   {isEditing ? 'Actualizar' : 'Guardar'}

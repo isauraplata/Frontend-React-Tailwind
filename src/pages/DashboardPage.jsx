@@ -38,7 +38,7 @@ function DashboardPage() {
           <StatCard
             title="Total Clientes"
             value={cliente.clientes.length}
-            bgColor="bg-blue-500"
+            bgColor="bg-[#f06f06]"
             textColor="text-white"
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -51,7 +51,7 @@ function DashboardPage() {
           <StatCard
             title="Total Motocicletas"
             value={moto.motocicletas.length}
-            bgColor="bg-blue-500"
+            bgColor="bg-[#f06f06]"
             textColor="text-white"
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -64,7 +64,7 @@ function DashboardPage() {
           <StatCard
             title="Órdenes de Servicio"
             value={orden.ordenes.length}
-            bgColor="bg-blue-500"
+            bgColor="bg-[#f06f06]"
             textColor="text-white"
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -77,7 +77,7 @@ function DashboardPage() {
           <StatCard
             title="Ingresos Totales"
             value={`$${orden.calcularIngresosTotales().toLocaleString()}`}
-            bgColor="bg-blue-500"
+            bgColor="bg-[#f06f06]"
             textColor="text-white"
             icon={
               <svg xmlns="http://www.w3.org/2000/svg" className="h-8 w-8" fill="none" viewBox="0 0 24 24" stroke="currentColor">

@@ -13,7 +13,7 @@ function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limi
       text: `¿Deseas eliminar al cliente ${name}?`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#bf50a8',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
@@ -28,20 +28,20 @@ function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limi
   
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="bg-blue-800 px-6 py-4 flex justify-between items-center">
+      <div className="bg-[#bf50a8] px-6 py-4 flex justify-between items-center">
         <h2 className="text-xl font-bold text-white">Clientes</h2>
         <div className="flex space-x-2">
           {limit && (
             <Link 
               to="/clientes" 
-              className="bg-blue-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+              className="bg-[#a8469a] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#933c87] transition-colors"
             >
               Ver Todos
             </Link>
           )}
           <button
             onClick={onNew}
-            className="bg-white text-blue-800 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 transition-colors"
+            className="bg-white text-[#bf50a8] px-4 py-2 rounded-lg font-medium hover:bg-purple-50 transition-colors"
           >
             Nuevo Cliente
           </button>
@@ -80,7 +80,7 @@ function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limi
                     <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                       <button
                         onClick={() => onEdit(cliente)}
-                        className="text-blue-600 hover:text-blue-900 mr-3"
+                        className="text-[#bf50a8] hover:text-[#933c87] mr-3"
                       >
                         Editar
                       </button>
@@ -105,7 +105,7 @@ function ClientesTable({ clientes, onEdit, onDelete, onNew, loading, error, limi
           {limit && clientes.length > limit && (
             <div className="p-3 bg-gray-50 text-center text-sm text-gray-500">
               Mostrando {limit} de {clientes.length} clientes. 
-              <Link to="/clientes" className="ml-1 text-blue-600 hover:text-blue-800">
+              <Link to="/clientes" className="ml-1 text-[#bf50a8] hover:text-[#933c87]">
                 Ver todos los clientes
               </Link>
             </div>

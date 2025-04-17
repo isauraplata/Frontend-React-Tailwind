@@ -1,6 +1,7 @@
 import React from 'react';
 import { Formik, Form, Field, ErrorMessage } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 function ClienteModal({ cliente, isEditing, onSave, onClose }) {
   // Esquema de validación con Yup
@@ -32,6 +33,7 @@ function ClienteModal({ cliente, isEditing, onSave, onClose }) {
   const handleSubmit = (values, { setSubmitting }) => {
     onSave(values);
     setSubmitting(false);
+    toast.success(isEditing ? 'Cliente actualizado correctamente' : 'Cliente creado correctamente');
   };
 
   return (

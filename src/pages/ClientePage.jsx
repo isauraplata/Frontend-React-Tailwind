@@ -1,14 +1,12 @@
 import React, { useEffect } from 'react';
 import ClienteModal from '../components/modals/ClienteModal';
 import ClientesTable from '../components/tables/ClientesTable';
-// Importamos nuestro hook personalizado
 import useCliente from '../hooks/useCliente';
 
 export default function ClientesPage() {
   // Utilizamos el hook personalizado
   const cliente = useCliente();
   
-  // Fetch inicial de datos
   useEffect(() => {
     cliente.fetchClientes();
   }, [cliente.fetchClientes]);

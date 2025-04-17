@@ -6,14 +6,13 @@ import toast from 'react-hot-toast';
 function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onNew, loading, error, limit }) {
   const displayMotocicletas = limit ? motocicletas.slice(0, limit) : motocicletas;
 
-  // Función para confirmar eliminación
   const confirmDelete = (id, motoInfo) => {
     Swal.fire({
       title: '¿Estás seguro?',
       text: `¿Deseas eliminar la motocicleta ${motoInfo}?`,
       icon: 'warning',
       showCancelButton: true,
-      confirmButtonColor: '#3085d6',
+      confirmButtonColor: '#b5b800',
       cancelButtonColor: '#d33',
       confirmButtonText: 'Sí, eliminar',
       cancelButtonText: 'Cancelar'
@@ -28,20 +27,20 @@ function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onN
 
   return (
     <div className="bg-white shadow-lg rounded-lg overflow-hidden">
-      <div className="bg-blue-800 px-6 py-4 flex justify-between items-center">
+      <div className="bg-[#b5b800] px-6 py-4 flex justify-between items-center">
         <h2 className="text-xl font-bold text-white">Motocicletas</h2>
         <div className="flex space-x-2">
           {limit && (
             <Link 
               to="/motocicletas" 
-              className="bg-blue-700 text-white px-4 py-2 rounded-lg font-medium hover:bg-blue-600 transition-colors"
+              className="bg-[#a3a600] text-white px-4 py-2 rounded-lg font-medium hover:bg-[#918f00] transition-colors"
             >
               Ver Todas
             </Link>
           )}
           <button
             onClick={onNew}
-            className="bg-white text-blue-800 px-4 py-2 rounded-lg font-medium hover:bg-blue-100 transition-colors"
+            className="bg-white text-[#b5b800] px-4 py-2 rounded-lg font-medium hover:bg-gray-50 transition-colors"
           >
             Nueva Motocicleta
           </button>
@@ -89,7 +88,7 @@ function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onN
                       <td className="px-6 py-4 whitespace-nowrap text-right text-sm font-medium">
                         <button
                           onClick={() => onEdit(moto)}
-                          className="text-blue-600 hover:text-blue-900 mr-3"
+                          className="text-[#b5b800] hover:text-[#918f00] mr-3"
                         >
                           Editar
                         </button>
@@ -115,7 +114,7 @@ function MotocicletasTable({ motocicletas, getClienteById, onEdit, onDelete, onN
           {limit && motocicletas.length > limit && (
             <div className="p-3 bg-gray-50 text-center text-sm text-gray-500">
               Mostrando {limit} de {motocicletas.length} motocicletas. 
-              <Link to="/motocicletas" className="ml-1 text-blue-600 hover:text-blue-800">
+              <Link to="/motocicletas" className="ml-1 text-[#b5b800] hover:text-[#918f00]">
                 Ver todas las motocicletas
               </Link>
             </div>

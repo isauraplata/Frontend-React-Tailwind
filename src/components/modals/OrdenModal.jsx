@@ -1,11 +1,11 @@
 import React, { useEffect, useState } from 'react';
 import { Formik, Form, Field, ErrorMessage, FieldArray } from 'formik';
 import * as Yup from 'yup';
+import toast from 'react-hot-toast';
 
 function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, onClose }) {
   // Estado para mantener la información del cliente
   const [clienteInfo, setClienteInfo] = useState(null);
-  // Estado para el mensaje de error del precio
   const [precioError, setPrecioError] = useState('');
   
   // Esquema de validación con Yup
@@ -66,6 +66,10 @@ function OrdenModal({ orden, motocicletas, getClienteById, isEditing, onSave, on
             
             onSave(formattedValues);
             setSubmitting(false);
+
+            toast.success(isEditing 
+              ? 'Orden de servicio actualizada correctamente' 
+              : 'Orden de servicio creada correctamente');
           }}
         >
           {({ values, errors, touched, setFieldValue }) => {
